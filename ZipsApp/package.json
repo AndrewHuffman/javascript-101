@@ -1,0 +1,10 @@
+{
+	"name": "zips-app",
+	"description": "Simple App to show zips",
+	"version": "0.0.1",
+	"private": true,
+	"dependencies": {
+		"express": "*",
+		"mongodb": "*"
+	}
+}
