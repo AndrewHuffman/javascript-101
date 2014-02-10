@@ -1,6 +1,7 @@
 var MongoClient = require('mongodb').MongoClient,
 	format 		= require('util').format;
-/* Module definition. Scopes find methods */
+
+/* Module definition. Scopes the find methods */
 var ZipsDB = {
 	/* MongoDB collection object */
 	collection: null,
@@ -28,7 +29,7 @@ var ZipsDB = {
 				errorMessage: "",
 				error: err,
 				results: []
-			}
+			};
 
 			if (err) {
 				console.error(err.stack);
@@ -60,4 +61,5 @@ MongoClient.connect('mongodb://localhost:27017/example',
 /*
 	TODO: Fix potential race condition issue with db connection initialization
 */
-module.exports = ZipsDB;
+module.exports.Model = {};
+module.exports.Model.ZipsDB = ZipsDB;

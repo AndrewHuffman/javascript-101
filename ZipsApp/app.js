@@ -1,6 +1,7 @@
 var express = require('express'),
-	zipsdb  = require('./db.js'),
-	app = express();
+	zipsdb  = require('./db.js').Model.ZipsDB,
+	app 	= express();
+
 //Error handler
 app.use(function(err, req, res, next){
 	console.error(err.stack);

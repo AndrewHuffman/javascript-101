@@ -59,31 +59,38 @@
                     </aside>
                 </section>
                 <section>
-                    <h2>Okay, so what <em>is</em> JavaScript?</h2>
-                    <div class="fragment">
-                    	<p>Scripting language for web clients</p>
-                    	<img 
-                            src="./imgs/cordova.png" 
-                            style="width: 25%; height: 25%; background: none; box-shadow: none;" />
+                    <section>
+                        <h2>Okay, so what <em>is</em> JavaScript?</h2>
+                        <div class="fragment">
+                        	<p>Scripting language for web clients</p>
+                        	<img 
+                                src="./imgs/cordova.png" 
+                                style="width: 25%; height: 25%; background: none; box-shadow: none;" />
 
-                    	<img src="./imgs/backbone.jpg"
-                             style="width: 25%; height: 25%; margin: 30px 30px 0px 30px;" />
+                        	<img src="./imgs/backbone.jpg"
+                                 style="width: 25%; height: 25%; margin: 30px 30px 0px 30px;" />
 
-                    	<img src="./imgs/dojo.gif" style="margin-bottom: 50px" />
-                    </div>
-                    </p>
-                    </ul>
-                    <aside class="notes">
-                    	<ol>
-                            <li>Defined by ECMAScript Standard</li>
-                    		<li>Object oriented &amp; functional</li>
-                    		<li>Primarily has been used in the client for the UI</li>
-                            <li>DOM manipulation to create animations and dynamic websites</li>
-                    		<li>dojo for UI</li>
-                    		<li>Cordova for hybrid phone development</li>
-                    		<li>backbone for MVC</li>
-                    	</ol>
-                    </aside>
+                        	<img src="./imgs/dojo.gif" style="margin-bottom: 50px" />
+                        </div>
+                        </p>
+                        </ul>
+                        <aside class="notes">
+                        	<ol>
+                                <li>Defined by ECMAScript Standard</li>
+                        		<li>Object oriented &amp; functional</li>
+                        		<li>Primarily has been used in the client for the UI</li>
+                                <li>DOM manipulation to create animations and dynamic websites</li>
+                                <li>AJAX / XHR Requests</li>
+                        		<li>dojo for UI</li>
+                        		<li>Cordova for hybrid phone development</li>
+                        		<li>backbone for MVC</li>
+                        	</ol>
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Document Object Model (DOM)</h2>
+                        <img src="./imgs/dom.gif" style="height: 80%;width:80%;" />
+                    </section>
                 </section>
                 <section>
                 	<h2>Okay, so what <em>is</em> JavaScript?</h2>
@@ -94,6 +101,7 @@
                 		<ol>
                 			<li>nodejs &amp; express.js</li>
                 			<li>mongoDB - NoSQL DB </li>
+                            <li>IBM is backing both by providing our own implementations of these (Informix backed MongoAPI)</li>
                 		</ol>
                 	</aside>
                 </section>
@@ -104,31 +112,70 @@
                 <section>
                     <h2>JavaScript is Weird</h2>
                     <pre><code>[]+(-~function(){}-~function(){}-~function(){}-~function(){}) /* "4" */</code></pre>
-                    <pre class="fragment"><code>"0" == false; /* true */
+                    <pre class="fragment"><code>({}+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]] /* "js" */</code></pre>
+                    <pre class="fragment"><code>"0" == false /* true */
 !"0" /* false */
 typeof null === 'object' /* true */</code></pre>
 <pre class="fragment"><code>(function foo() {
     // Do something
 })();
 </code></pre>
+<pre class="fragment"><code>function makeAddFunction(arr, amount) {
+    arr["add"+amount] = function() {
+        var idx = 0, newArray = [];
+        this.forEach(function(value) { newArray.push(value+amount) });
+        return newArray;
+    }
+}
+var myArray = [2,4,5];
+makeAddFunction(myArray, 5); //Creates myArray.add5
+var newArray = myArray.add5(); //[7,9,10]
+newArray.add5(); //Error!
+</code></pre>
                     <aside class="notes">
                         <ol>
                             <li>Returns string of "4." ~ bitwise NOT.</li>
-                            <li>
-                                "0" is evaluated as the integer 0, but !"0" is checking to see if the variable isn't null
-                            </li>
-                            <li>Immediately declared function that is called. Usually done to scope variables.</li>
+                            <li>"0" is evaluated as the integer 0, but !"0" is checking to see if the variable isn't null</li>
+                            <li>Self-invoked function. Used to scope variables to a single javascript file.</li>
                         </ol>
                     </aside>
+                </section>
+                <section>
+                    <h2>JavaScript Doesn't Force Structure</h2>
+<pre style="width: 1100px;margin-left:-40px"><code style="width: 1100px;margin-left:0px">var source = "./imgs",
+    maxHeight = 1000;
+
+s.readdir(source, function(err, files) {
+    if(err) {
+        console.log("Error finding files: "+err);
+    } else {
+        files.forEach(function(filename)) {
+            gm(source+filename).size(function(err, imgProperties) {
+                if (err) {
+                    console.log("Error identifying file size: "+err);
+                } else {
+                    var aspect = (values.width / values.height)
+                    widths.forEach(function(width, widthIndex) {
+                        height = Math.min(Math.round(width/aspect), maxHeight);
+                        console.log("resizing " + filename + " to " + width+'x'+height);
+                        this.resize(width, height).write(destination, function(err) {
+                            if(err) { console.log('Error writing file: '+err); }
+                        });
+                    }).bind(this);
+                }
+            })
+        }
+    }
+}</code></pre>
                 </section>
                 <section>
                     <h2>JavaScipt Types</h2>
 <pre><code style="line-height: 28px;">var aNumber = 5; /* Number */
 aNumber = aNumber/2; /* = 2.5 */
-var aBool = true; /* Boolean */
-
 var aString = "A string"; /* String */
+var aBool = true; /* Boolean */
 var arr = [1,2,3]; /* Array */
+
 var regEx = /^[A-Z]+/; /* RegExp */
 var aFun = function(x) { return x + 1}; /* Function */
 var anObjLiteral = { foo: "bar" }; /* Object */
@@ -152,6 +199,8 @@ someObj.c; /* undefined */</code></pre>
     title: "The Wall",
     artist: "Pink Floyd",
     tracks: ["In the Flesh?", "The Thin Ice", ...],
+    isAwesome: true,
+    rating: 5,
     numTracks: function() {
         return theWallAlbum.tracks.length;
     }
@@ -166,27 +215,31 @@ theWallAlbum.numTracks(); //27</code></pre>
                         <ol>
                             <li>A hash table. Same as PHP's associative array or Python's dictionary.</li>
                             <li>Properties bags (e.g., named paramters)</li>
-                            <li>Adding properties to an object is powerful</li>
+                            <li>Lazy variable referencing</li>
+                            <li>Dot-notation</li>
+                            <li>Bracket-notation</li>
+                            <li>Adding properties</li>
                         </ol>
                     </aside>
                 </section>
                 <section>
                     <h2>Arrays</h2>
 <pre style="width: 1000px;line-height:30px;"><code>var anArray = [1,2,3,"four",false];
-var s = anArray[2]; /* 3 */
-var a = anArray.length; /* 5 */
+anArray[2]; /* 3 */
+anArray.length; /* 5 */
 </code></pre>
 <pre class="fragment" style="width: 1000px;line-height:30px;"><code>anArray.push(6); /* [1,2,3,"four",false,6] */
 anArray.pop(); /* returns 6 */
 anArray.join(","); /* "1,2,3,four,false" */
 </code></pre>
-<pre class="fragment" style="width: 1000px;line-height:30px;"><code>anArray.forEach(function(elm){ /* Do something */ });
+<pre class="fragment" style="width: 1000px;line-height:30px;"><code>anArray.forEach(function(elm) { /* Do something */ });
 anArray.filter(function(elm) { return elm > 1 }); /* [3,4] */
 var sumArray = [1,2,3,4];
 sumArray = sumArray.map(function(n) { return n*n }); //[1,4,9,16]
 sumArray.reduce(function(prev, curr) { return prev + curr }); //30</code></pre>
                 <aside class="notes">
                     <ol>
+                        <li>[].join USED TO BE more performant than concatenation</li>
                         <li>Point out functions can be passed in as arguments</li>
                         <li>ECMAScript 5 (IE9+) - dojo altneratives</li>
                     </ol>
@@ -195,31 +248,40 @@ sumArray.reduce(function(prev, curr) { return prev + curr }); //30</code></pre>
                 <section>
                     <h2>Functions</h2>
 <pre><code>foo(); /* > "foo called" */
-
 /* Declaration */
 function foo() {
     console.log("foo called");
 }
 
 bar(); /* Error! */
-
 /* Expression */
 var bar = function() {
     console.log("bar called");
-}</code></pre>
+}
+</code></pre><pre><code>/* logMessage(msg[, tag, [level]]) */
+function logMessage(msg) {
+    var tag   = arguments[1] || "Global",
+        level = arguments[2] || "INFO";
+
+    console.log("[%s] - [%s]: %s", level, tag, msg);
+}
+logMessage("Something bad happened.", "PageController", "ERROR");</code></pre>
+            <aside class="notes">
+                - Be careful about using '||' to check for null values
+            </aside>    
                 </section>
                 <section>
                     <h2>Nested Functions</h2>
-<pre><code>function artistTable(artists) {
+<pre style="width: 950px;"><code>function goodArtistTable(artists) {
     function _buildRow(artist) {
         var row = $("&lt;tr&gt;");
         row.append($("&lt;td&gt;").text(artist.name));
         row.append($("&lt;td&gt;").text(artist.album));
         return row;
     }
-
-    var table = $("&lt;table&gt;")
-    artists.map(_buildRow).forEach(
+    var goodArtists = artists.filter(function(artist) { return artist.isGood });
+    var table = $("&lt;table&gt;");
+    goodArtists.map(_buildRow).forEach(
         function(row) {
             table.append(row)
         }
@@ -227,6 +289,9 @@ var bar = function() {
     
     return table;
 }</code></pre>
+            <aside class="notes">
+                - Point out jQuery function
+            </aside>
                 </section>
                 <section>
                     <h2>Closures</h2>
@@ -240,18 +305,84 @@ var bar = function() {
 }
 
 var add = adderTracker();
-add(1,2); // > "additions: 1"
-add(4,2); // > "additions: 2"
-add(12,2); // > "additions: 3"</code></pre>
+add(1,2);  // &gt; "additions: 1"
+add(4,2);  // &gt; "additions: 2"
+add(12,2); // &gt; "additions: 3"</code></pre>
                 <aside class="notes">
                     <ol>
+                        <li>A function that has enclosed a variable outside its scope</li>
                         <li>Similar to objects</li>
                         <li>Great for reducing repeated code for callbacks</li>
+                        <li>Currying &amp; Partial Applications</li>
                     </ol>
                 </aside>
                 </section>
                 <section>
-                    <h2>Objects</h2>
+                <h2>Closures: Use Case</h2>
+<pre><code>xhr.get("/employees", function(err, response) {
+    console.log("Server response for /employees: %j", response);
+    if (err) {
+        console.log("Error communicating with server.");
+        console.error(err.stack);
+    } else {
+        if (response &amp;&amp; response.data &amp;&amp; response.data.length > 0) {
+            console.log("Results: %j", response.data);
+            /* Do something with data */
+        }
+    }
+));</code></pre><pre><code> xhr.get("/departments", function(err, response) {
+    console.log("Server response for /departments: %j", response);
+    if (err) {
+        console.log("Error communicating with server.");
+        console.error(err.stack);
+    } else {
+        if (response &amp;&amp; response.data &amp;&amp; response.data.length > 0) {
+            console.log("Results: %j", response.data);
+            /* Do something with data */
+        }
+    }
+));</code></pre>
+                </section> 
+                <section>
+                <h2>Closures: Use Case</h2>
+<pre style="width: 1100px;margin-left:-60px"><code style="width: 1100px;margin-left:0px">var _handleServerResponse(next) {
+    return function(err, response) {
+        var isError = !!err;
+        console.log("Server responded - endpoint: %s isError: %s, response: %j",
+            response.endpoint, isError, response);
+
+        if(isError) { console.error(err.stack); }
+        var formattedResponse = {
+            success: !isError,
+            error: err,
+            response: response,
+            data: (response &amp;&amp; response.data &amp;&amp; response.data.length >= 0) ? response.data : []
+        };
+
+        next(formattedResponse);
+    }
+}</code></pre>
+                </section>
+                <section>
+                <h2>Closures: Use Case</h2>
+                <pre><code>xhr.get("/employees", 
+    _handServerResponse(function(response) {
+        response.data.forEach(function(emp) {
+            //Add employee to table
+        });
+    }
+));
+
+xhr.post("/departments", 
+    _handServerResponse(function(response) {
+        response.data.forEach(function(dept) {
+            //Add department to table
+        });
+    }
+));</code></pre>
+                </section>
+                <section>
+                    <h2>Constructing Objects</h2>
                     <p>Objects &larr; &rarr; Functions</p>
 <pre><code>function Person(name, age) {
     this.name = name;
@@ -260,8 +391,7 @@ add(12,2); // > "additions: 3"</code></pre>
 Person.prototype = {
     getName: function() { return this.name; },
     getAge: function() { return this.age; }
-}
-</code></pre>
+};</code></pre>
 <div class="fragment">
 <pre><code>function Person(name, age) {
     this.name = name;
@@ -294,21 +424,21 @@ var doubleArray = [1,2,3].double(); //[1,2,3,1,2,3]</code></pre>
                 </section>
                 <section>
                 <h2>Prototype Inheritence</h2>
-<pre><code>function Employee(name, age, department) {
-    Person.call(this, name, age);
-    this.department = department;
+<pre><code>/* Employee inherits from Person */
+function Employee(name, age, department) {
+    Person.call(this, name, age)
+    this.department = department
 }
 
-Employee.prototype = new Employee() ;
-Employee.prototype.constructor = Employee;
+Employee.prototype = new Employee()
+Employee.prototype.constructor = Employee
 Employee.prototype.getDepartment = function() {
-    return this.department;
+    return this.department
 }
-
-var sally = new Employee("Sally", 29, "Human Resources");
-sally instanceOf Person; // true
-sally.getDepartment(); //"Human Resources"
-sally.getName(); //"Sally"
+</code></pre><pre><code>var sally = new Employee("Sally", 29, "Human Resources")
+sally instanceOf Person // true
+sally.getDepartment() //"Human Resources"
+sally.getName() //"Sally"
 </code></pre>
                 <aside class="notes">
                     <ol>
@@ -340,16 +470,16 @@ objA.callMeBack(objB.printMyField.bind(objA)); // >"myField: ObjA's Field"</code
                 </section>
                 <section>
                     <h2>Other Gotchas</h2>
-                    <!-- Lazy Scoping -->
-                    <!-- Globals -->
-                    <!-- -->
+                    <ul>
+                        <li>Lazy Scoping</li>
+                        <li>Globals</li>
+                        <li><code>for-in</code> loops</li>
+                    </ul>
                 </section>
                 <section>
                     <h2>Deferreds &amp; Promises</h2>
-<pre><code>
-function getEmployeesWithManager(manager) {
+<pre><code>function getEmployeesWithManager(manager) {
     var deferred = new Deferred();
-
     xhr("/employees").then(
         function success(data) {
             var managerEmployees =
@@ -363,11 +493,8 @@ function getEmployeesWithManager(manager) {
             deferred.reject(reason)
         }
     );
-
     return deferred.promise;
-}
-
-getEmployeesWithManager("Jane").then(
+}</code></pre><pre><code>getEmployeesWithManager("Jane").then(
     function success(janesEmployees) {
         /* Do Something */
     }, function err(errMsg) {
@@ -377,16 +504,38 @@ getEmployeesWithManager("Jane").then(
 </code></pre>
                 </section>
                 <section>
-                    <h2>Asynchronous Module Definitions</h2>
-                    <p>(AMD)</p>
+                    <h2>Aspects</h2>
+                </section>
+                <section>
+                    <h2>Modules</h2>
+                    <p>Asynchronous Module Definitions (AMD)</p>
 <pre><code>define(["dojo/declare", "dojo/form/Form", "dojo/form/TextBox"],
     function(declare, Form, TextBox) {
-        declare("widgets/MyWidget", {
+        return declare("widgets/MyWidget", {
             /* Define widget */
         });
     }
-)
-</code></pre>
+)</code></pre>
+                </section>
+                <section><h2>Modules</h2>
+<p>NodeJS Modules</p>
+<pre><code>/* Define Module */
+
+module.exports.Model = {};
+
+var EmployeeModel = {
+    getEmployees: function(onFinish) {
+        //retrieve employees from DB
+        onFinish(error, results);
+    },
+
+    addEmployee: function(employee, onFinish) {
+        //add employee to DB
+        onFinish(error, newEmployeeId);
+    }
+}
+
+module.exports.Model.Employee = EmployeeModel</code></pre>
                 </section>
             </div>
         </div>
