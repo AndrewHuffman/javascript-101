@@ -59,9 +59,14 @@
                 <section>
                     <h2>Okay, so what <em>is</em> JavaScript?</h2>
                     <div class="fragment">
-                    	<p>Scripting language for web browsers</p>
-                    	<img src="./imgs/cordova.png" style="width: 25%; height: 25%; background: none;" />
-                    	<img src="./imgs/backbone.jpg" style="width: 25%; height: 25%; margin: 30px 30px 0px 30px;" />
+                    	<p>Scripting language for web clients</p>
+                    	<img 
+                            src="./imgs/cordova.png" 
+                            style="width: 25%; height: 25%; background: none; box-shadow: none;" />
+
+                    	<img src="./imgs/backbone.jpg"
+                             style="width: 25%; height: 25%; margin: 30px 30px 0px 30px;" />
+
                     	<img src="./imgs/dojo.gif" style="margin-bottom: 50px" />
                     </div>
                     </p>
@@ -78,11 +83,9 @@
                 </section>
                 <section>
                 	<h2>Okay, so what <em>is</em> JavaScript?</h2>
-                    <div class="fragment">
-                    	<p>...and now the server</p>
-                    	<img src="./imgs/node.png" style="width: 38%; height: 38%;margin-right: 40px;" />
-                    	<img src="./imgs/mongodb.png" style="width: 40%; height: 40%; padding: 5px 20px;" />
-                	</div>
+                	<p>...and now the server.</p>
+                	<img src="./imgs/node.png" style="width: 38%; height: 38%; margin-right: 40px;" />
+                	<img src="./imgs/mongodb.png" style="width: 40%; height: 40%; padding: 5px 20px;" />
                 	<aside class="notes">
                 		<ol>
                 			<li>nodejs &amp; express.js</li>
@@ -90,9 +93,30 @@
                 		</ol>
                 	</aside>
                 </section>
-                <section>
+<!--                 <section>
                     <h2>DOM Tree</h2>
                     <img src="./dom.gif" />
+                </section> -->
+                <section>
+                    <h2>JavaScript is Weird</h2>
+                    <pre><code>[]+(-~function(){}-~function(){}-~function(){}-~function(){}) + (-~function(){}-~function(){}) /* 42 */</code></pre>
+                    <pre class="fragment"><code>"0" == false; /* true */</code></pre>
+                    <pre class="fragment"><code>!"0" /* false */</code></pre>
+                    <pre class="fragment"><code>typeof null === 'object' /* true */</code></pre>
+                    <pre class="fragment"><code>
+(function foo() {
+    /* Do someting */
+})();
+                    </code></pre>
+                    <aside class="notes">
+                    <ol>
+                        <li>
+                            "0" is evaluated as the integer 0, but !"0" is checking to see if the variable isn't null
+                        </li>
+                        <li>Immediately declared function that is called. Usually done to scope variables.</li>
+
+                    </ol>
+                    </aside>
                 </section>
                 <section>
                     <section>

@@ -1,9 +1,11 @@
 var MongoClient = require('mongodb').MongoClient,
 	format 		= require('util').format;
-
+/* Module definition. Scopes find methods */
 var ZipsDB = {
+	/* MongoDB collection object */
 	collection: null,
 
+	/* Retrieve all zipcodes. Limit to limit if defined.  */
 	find: function(next, limit) {
 		this._query({}, next, limit);
 	},
@@ -14,7 +16,7 @@ var ZipsDB = {
 
 	_query: function(query, next, limit) {
 		var options = {};
-		if (limit) options.limit = limit;
+		if (limit) { options.limit = limit; }
 		this.collection.find(query, options).toArray(this._cb(next));
 	},
 
@@ -59,4 +61,3 @@ MongoClient.connect('mongodb://localhost:27017/example',
 	TODO: Fix potential race condition issue with db connection initialization
 */
 module.exports = ZipsDB;
-
