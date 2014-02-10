@@ -53,7 +53,9 @@
 		                <img src="./imgs/SillyJava.png" />
                     </div>
                     <aside class="notes">
-                    	JavaScript could be to Java what Java is to C/C++.
+                        <ol>
+                            <li>JavaScript could be to Java what Java is to C/C++.</li>
+                        </ol>
                     </aside>
                 </section>
                 <section>
@@ -73,9 +75,11 @@
                     </ul>
                     <aside class="notes">
                     	<ol>
+                            <li>Defined by ECMAScript Standard</li>
                     		<li>Object oriented &amp; functional</li>
-                    		<li>NOT for just UI</li>
-                    		<li>dojo for UI - manipulates the DOM</li>
+                    		<li>Primarily has been used in the client for the UI</li>
+                            <li>DOM manipulation to create animations and dynamic websites</li>
+                    		<li>dojo for UI</li>
                     		<li>Cordova for hybrid phone development</li>
                     		<li>backbone for MVC</li>
                     	</ol>
@@ -99,91 +103,228 @@
                 </section> -->
                 <section>
                     <h2>JavaScript is Weird</h2>
-                    <pre><code>[]+(-~function(){}-~function(){}-~function(){}-~function(){}) + (-~function(){}-~function(){}) /* 42 */</code></pre>
-                    <pre class="fragment"><code>"0" == false; /* true */</code></pre>
-                    <pre class="fragment"><code>!"0" /* false */</code></pre>
-                    <pre class="fragment"><code>typeof null === 'object' /* true */</code></pre>
-                    <pre class="fragment"><code>
-(function foo() {
-    /* Do someting */
+                    <pre><code>[]+(-~function(){}-~function(){}-~function(){}-~function(){}) /* "4" */</code></pre>
+                    <pre class="fragment"><code>"0" == false; /* true */
+!"0" /* false */
+typeof null === 'object' /* true */</code></pre>
+<pre class="fragment"><code>(function foo() {
+    // Do something
 })();
-                    </code></pre>
+</code></pre>
+                    <aside class="notes">
+                        <ol>
+                            <li>Returns string of "4." ~ bitwise NOT.</li>
+                            <li>
+                                "0" is evaluated as the integer 0, but !"0" is checking to see if the variable isn't null
+                            </li>
+                            <li>Immediately declared function that is called. Usually done to scope variables.</li>
+                        </ol>
+                    </aside>
+                </section>
+                <section>
+                    <h2>JavaScipt Types</h2>
+<pre><code style="line-height: 28px;">var aNumber = 5; /* Number */
+aNumber = aNumber/2; /* = 2.5 */
+var aBool = true; /* Boolean */
+
+var aString = "A string"; /* String */
+var arr = [1,2,3]; /* Array */
+var regEx = /^[A-Z]+/; /* RegExp */
+var aFun = function(x) { return x + 1}; /* Function */
+var anObjLiteral = { foo: "bar" }; /* Object */
+
+var aNull = null;
+var anUndefined; /* undefined */
+var someObj = { "a": "b" };
+someObj.c; /* undefined */</code></pre>
                     <aside class="notes">
                     <ol>
-                        <li>
-                            "0" is evaluated as the integer 0, but !"0" is checking to see if the variable isn't null
-                        </li>
-                        <li>Immediately declared function that is called. Usually done to scope variables.</li>
-
+                        <li>Loosely typed</li>
+                        <li>All numbers are essentially floats</li>
+                        <li>Undefined is a variable that hasn't been defined. Null is a null object.</li>
                     </ol>
                     </aside>
                 </section>
                 <section>
-                    <section>
-                        <h2>JS Types</h2>
-                        <pre>
-                            <code>
-var imNull = null; /* null */
-var imNotDefined; /* = undefined */
-var aString = "This is a string"; /* String */
-var aNumber = 5; /* Number */
-aNumber = aNumber/2; /* = 2.5 */
-var bool = true; /* or false */
-var anObj = {
-    field: "value",
-    method: function() { return 5; }
-}
-var anArray = [1,2,"three",{four: "five"}]
-var regEx = /^[A-Z]+/
-var aFun = function(x) { return x + 1}
-                            </code>
-                        </pre>
-                    </section>
-                    <section>
-                        <h2>JS Types: Object Literals</h2>
-                        <p>
-                            A hash table. Same as PHP's associative array or Python's dictionary.
-                            <pre>
-                                <code>
-var theWallAlbum = {
-    "title": "The Wall",
-    "artist": "Pink Floyd",
-    "tracks": ["In the Flesh?", "The Thin Ice", ...],
-    "numTracks": function() { return theWallAlbum.tracks.length }
+                    <h2>Object Literals</h2>
+                    <p>
+<pre><code>var theWallAlbum = {
+    title: "The Wall",
+    artist: "Pink Floyd",
+    tracks: ["In the Flesh?", "The Thin Ice", ...],
+    numTracks: function() {
+        return theWallAlbum.tracks.length;
+    }
 };
 
 theWallAlbum.title; //"The Wall"
 theWallAlbum["artist"]; //"Pink Floyd"
 theWallAlbum.released = "Nov 30, 1979";
-theWallAlbum.numTracks(); //27
-                                </code>
-                            </pre>
-                        </p>
-                    </section>
-                    <section>
-                        <h2>JS Types: Objects</h2>
-                        <pre>
-                            <code>
-var Person = function(name) {
-    this.name = name;
+theWallAlbum.numTracks(); //27</code></pre>
+                    </p>
+                    <aside class="notes">
+                        <ol>
+                            <li>A hash table. Same as PHP's associative array or Python's dictionary.</li>
+                            <li>Properties bags (e.g., named paramters)</li>
+                            <li>Adding properties to an object is powerful</li>
+                        </ol>
+                    </aside>
+                </section>
+                <section>
+                    <h2>Arrays</h2>
+<pre style="width: 1000px;line-height:30px;"><code>var anArray = [1,2,3,"four",false];
+var s = anArray[2]; /* 3 */
+var a = anArray.length; /* 5 */
+</code></pre>
+<pre class="fragment" style="width: 1000px;line-height:30px;"><code>anArray.push(6); /* [1,2,3,"four",false,6] */
+anArray.pop(); /* returns 6 */
+anArray.join(","); /* "1,2,3,four,false" */
+</code></pre>
+<pre class="fragment" style="width: 1000px;line-height:30px;"><code>anArray.forEach(function(elm){ /* Do something */ });
+anArray.filter(function(elm) { return elm > 1 }); /* [3,4] */
+var sumArray = [1,2,3,4];
+sumArray = sumArray.map(function(n) { return n*n }); //[1,4,9,16]
+sumArray.reduce(function(prev, curr) { return prev + curr }); //30</code></pre>
+                <aside class="notes">
+                    <ol>
+                        <li>Point out functions can be passed in as arguments</li>
+                        <li>ECMAScript 5 (IE9+) - dojo altneratives</li>
+                    </ol>
+                </aside>
+                </section>
+                <section>
+                    <h2>Functions</h2>
+<pre><code>foo(); /* > "foo called" */
+
+/* Declaration */
+function foo() {
+    console.log("foo called");
 }
-Person.prototype.getName = function() { return this.name }
-var john = new Person("John");
-john.getName(); /* "John" */
-                            </code>
-                        </pre>
-                    </section>
-                    <section>
-                        <h2>'this' Scoping</h2>
-                        <p>'<code>this</code>' refers to the context a function is called within. The context is dynamically determined.
-                            <pre>                            
-                                <code style="max-height: 600px;max-width: 900px;padding:0">
-var ObjA = function() {
+
+bar(); /* Error! */
+
+/* Expression */
+var bar = function() {
+    console.log("bar called");
+}</code></pre>
+                </section>
+                <section>
+                    <h2>Nested Functions</h2>
+<pre><code>function artistTable(artists) {
+    function _buildRow(artist) {
+        var row = $("&lt;tr&gt;");
+        row.append($("&lt;td&gt;").text(artist.name));
+        row.append($("&lt;td&gt;").text(artist.album));
+        return row;
+    }
+
+    var table = $("&lt;table&gt;")
+    artists.map(_buildRow).forEach(
+        function(row) {
+            table.append(row)
+        }
+    );
+    
+    return table;
+}</code></pre>
+                </section>
+                <section>
+                    <h2>Closures</h2>
+<pre><code>function adderTracker() {
+    var additions = 0;
+    return function(x, y) {
+        additions++;
+        console.log("additions: "+additions)
+        return x+y;
+    }
+}
+
+var add = adderTracker();
+add(1,2); // > "additions: 1"
+add(4,2); // > "additions: 2"
+add(12,2); // > "additions: 3"</code></pre>
+                <aside class="notes">
+                    <ol>
+                        <li>Similar to objects</li>
+                        <li>Great for reducing repeated code for callbacks</li>
+                    </ol>
+                </aside>
+                </section>
+                <section>
+                    <h2>Objects</h2>
+                    <p>Objects &larr; &rarr; Functions</p>
+<pre><code>function Person(name, age) {
+    this.name = name;
+    this.age  = age;
+}
+Person.prototype = {
+    getName: function() { return this.name; },
+    getAge: function() { return this.age; }
+}
+</code></pre>
+<div class="fragment">
+<pre><code>function Person(name, age) {
+    this.name = name;
+    this.age  = age;
+    this.getName = function() { return this.name; };
+    this.getAge  = function() { return this.age; };
+}</code></pre>
+<pre><code>var john = new Person("John", 33);
+john.getAge(); //33
+</code></pre>
+</div>
+                <aside class="notes">
+                    <ol>
+                        <li>Objects are prototype-based (class-less)</li>
+                        <li>Privilege methods</li>
+                    </ol>
+                </aside>
+                </section>
+                <section>
+                <h2>Prototype Augmentation</h2>
+<pre><code>Array.prototype.double = function() {
+    var doubleArray = this.slice(0); //Copies 'this' array
+    this.forEach(function(elm) {
+        doubleArray.push(elm)
+    });
+    return doubleArray;
+}
+
+var doubleArray = [1,2,3].double(); //[1,2,3,1,2,3]</code></pre>
+                </section>
+                <section>
+                <h2>Prototype Inheritence</h2>
+<pre><code>function Employee(name, age, department) {
+    Person.call(this, name, age);
+    this.department = department;
+}
+
+Employee.prototype = new Employee() ;
+Employee.prototype.constructor = Employee;
+Employee.prototype.getDepartment = function() {
+    return this.department;
+}
+
+var sally = new Employee("Sally", 29, "Human Resources");
+sally instanceOf Person; // true
+sally.getDepartment(); //"Human Resources"
+sally.getName(); //"Sally"
+</code></pre>
+                <aside class="notes">
+                    <ol>
+                        <li>Point out 'call' on Person</li>
+                    </ol>
+                </aside>
+                </section>
+                <section>
+                    <h2>Gotchas: 'this' Scoping</h2>
+                    <p>'<code>this</code>' refers to the context a function is called within.
+<pre><code style="max-height: 600px;max-width: 900px;padding:0">function ObjA() {
     this.myField = "ObjA's Field";
     this.callMeBack = function(aFun) { aFun() };
 }                                    
 
-var ObjB = function() {
+function ObjB() {
     this.myField = "ObjB's Field";
     this.printMyField = function() {
         console.log("myField: %s", this.myField)
@@ -193,17 +334,62 @@ var ObjB = function() {
 var objA = new ObjA();
 var objB = new ObjB();
 
-objA.callMeBack(objB.printMyField); //prints undefined
-objA.callMeBack(objB.printMyField.bind(objB)); //prints "ObjB's Field"
-objA.callMeBack(objB.printMyField.bind(objA)); //prints "ObjB's Field"
-                                </code>
-                            </pre>
-                    </section>
+objA.callMeBack(objB.printMyField); // > "myField: undefined"
+objA.callMeBack(objB.printMyField.bind(objB)); // > "myField: objB's Field"
+objA.callMeBack(objB.printMyField.bind(objA)); // >"myField: ObjA's Field"</code></pre>
                 </section>
-			</div>
+                <section>
+                    <h2>Other Gotchas</h2>
+                    <!-- Lazy Scoping -->
+                    <!-- Globals -->
+                    <!-- -->
+                </section>
+                <section>
+                    <h2>Deferreds &amp; Promises</h2>
+<pre><code>
+function getEmployeesWithManager(manager) {
+    var deferred = new Deferred();
 
-		</div>
+    xhr("/employees").then(
+        function success(data) {
+            var managerEmployees =
+                data.filter(function(emp) {
+                    return emp == manager
+                    }
+                );
+            deferred.resolve(managerEmployees);
+        }, function err(err) {
+            var reason = err.msg;
+            deferred.reject(reason)
+        }
+    );
 
+    return deferred.promise;
+}
+
+getEmployeesWithManager("Jane").then(
+    function success(janesEmployees) {
+        /* Do Something */
+    }, function err(errMsg) {
+        console.error(errMsg);
+    }
+);
+</code></pre>
+                </section>
+                <section>
+                    <h2>Asynchronous Module Definitions</h2>
+                    <p>(AMD)</p>
+<pre><code>define(["dojo/declare", "dojo/form/Form", "dojo/form/TextBox"],
+    function(declare, Form, TextBox) {
+        declare("widgets/MyWidget", {
+            /* Define widget */
+        });
+    }
+)
+</code></pre>
+                </section>
+            </div>
+        </div>
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.min.js"></script>
 
