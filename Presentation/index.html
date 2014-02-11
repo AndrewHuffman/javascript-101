@@ -55,6 +55,8 @@
                     <aside class="notes">
                         <ol>
                             <li>JavaScript could be to Java what Java is to C/C++.</li>
+                            <li>Brendan Eich @ Netscape</li>
+                            <li>Netscape Navigator in 1995</li>
                         </ol>
                     </aside>
                 </section>
@@ -93,17 +95,41 @@
                     </section>
                 </section>
                 <section>
-                	<h2>Okay, so what <em>is</em> JavaScript?</h2>
-                	<p>...and now the server.</p>
-                	<img src="./imgs/node.png" style="width: 38%; height: 38%; margin-right: 40px;" />
-                	<img src="./imgs/mongodb.png" style="width: 40%; height: 40%; padding: 5px 20px;" />
-                	<aside class="notes">
-                		<ol>
-                			<li>nodejs &amp; express.js</li>
-                			<li>mongoDB - NoSQL DB </li>
-                            <li>IBM is backing both by providing our own implementations of these (Informix backed MongoAPI)</li>
-                		</ol>
-                	</aside>
+                    <section>
+                    	<h2>Okay, so what <em>is</em> JavaScript?</h2>
+                    	<p>...and now the server.</p>
+                    	<img src="./imgs/node.png" />
+                    	<!-- <img src="./imgs/mongodb.png" style="width: 40%; height: 40%; padding: 5px 20px;" /> -->
+                    	<aside class="notes">
+                    		<ol>
+                    			<li>nodejs &amp; express.js</li>
+                    			<li>mongoDB - NoSQL DB </li>
+                                <li>IBM is backing both by providing our own implementations of these (Informix backed MongoAPI)</li>
+                    		</ol>
+                    	</aside>
+                    </section>
+                    <section>
+                        <h2>NodeJS Stack</h2>
+                        <img src="./imgs/nodejs_stack.png" />
+                    </section>
+                    <section>
+                        <h2>NodeJS Ecosystem</h2>
+                        <img src="./imgs/npm.png" style="background: none;box-shadow:none;height: 30%; width: 30%;" />
+                        <img src="./imgs/expressjs.png" style="margin-left:30px;margin-bottom:35px;height: 30%; width: 30%"/> <br />
+                        <img src="./imgs/yeoman_toolset.png" style="background: none;box-shadow:none;height: 40%;width:40%;margin-right:30px;" />
+                        <img src="./imgs/mongodb.png" style="height: 50%;width: 50%;background: none;box-shadow:none;margin-bottom:30px;" />
+                        <img src="./imgs/socketio.png" style="height: 50%;width: 50%;"/>
+                        <p>and much more...</p>
+                        <aside class="notes">
+                            <ul>
+                                <li>npm - Node Package Manager - brings down dependencies</li>
+                                <li>express - web app framework for node</li>
+                                <li>yeoman - yo, grunt, bower - toolkit for webapp development</li>
+                                <li>mongodb - NoSQL DB that can execute javascript</li>
+                                <li>socketio - websocket library</li>
+                            </ul>
+                        </aside>
+                    </section>
                 </section>
 <!--                 <section>
                     <h2>DOM Tree</h2>
@@ -116,7 +142,7 @@
                     <pre class="fragment"><code>"0" == false /* true */
 !"0" /* false */
 typeof null === 'object' /* true */</code></pre>
-<pre class="fragment"><code>(function foo() {
+<pre class="fragment"><code>;(function foo() {
     // Do something
 })();
 </code></pre>
@@ -320,24 +346,24 @@ add(12,2); // &gt; "additions: 3"</code></pre>
                 <section>
                 <h2>Closures: Use Case</h2>
 <pre><code>xhr.get("/employees", function(err, response) {
-    console.log("Server response for /employees: %j", response);
+    console.log("Server response for /employees: %o", response);
     if (err) {
         console.log("Error communicating with server.");
         console.error(err.stack);
     } else {
-        if (response &amp;&amp; response.data &amp;&amp; response.data.length > 0) {
-            console.log("Results: %j", response.data);
+        if (response && response.data && response.data.length > 0) {
+            console.log("Results: %o", response.data);
             /* Do something with data */
         }
     }
 ));</code></pre><pre><code> xhr.get("/departments", function(err, response) {
-    console.log("Server response for /departments: %j", response);
+    console.log("Server response for /departments: %o", response);
     if (err) {
         console.log("Error communicating with server.");
-        console.error(err.stack);
+        console.error(err.stack)
     } else {
-        if (response &amp;&amp; response.data &amp;&amp; response.data.length > 0) {
-            console.log("Results: %j", response.data);
+        if (response && response.data && response.data.length > 0) {
+            console.log("Results: %o", response.data);
             /* Do something with data */
         }
     }
@@ -348,7 +374,7 @@ add(12,2); // &gt; "additions: 3"</code></pre>
 <pre style="width: 1100px;margin-left:-60px"><code style="width: 1100px;margin-left:0px">var _handleServerResponse(next) {
     return function(err, response) {
         var isError = !!err;
-        console.log("Server responded - endpoint: %s isError: %s, response: %j",
+        console.log("Server responded - endpoint: %s isError: %s, response: %o",
             response.endpoint, isError, response);
 
         if(isError) { console.error(err.stack); }
@@ -411,34 +437,22 @@ john.getAge(); //33
                 </aside>
                 </section>
                 <section>
-                <h2>Prototype Augmentation</h2>
-<pre><code>Array.prototype.double = function() {
-    var doubleArray = this.slice(0); //Copies 'this' array
-    this.forEach(function(elm) {
-        doubleArray.push(elm)
-    });
-    return doubleArray;
-}
-
-var doubleArray = [1,2,3].double(); //[1,2,3,1,2,3]</code></pre>
-                </section>
-                <section>
                 <h2>Prototype Inheritence</h2>
 <pre><code>/* Employee inherits from Person */
 function Employee(name, age, department) {
-    Person.call(this, name, age)
-    this.department = department
+    Person.call(this, name, age);
+    this.department = department;
 }
 
-Employee.prototype = new Employee()
-Employee.prototype.constructor = Employee
+Employee.prototype = new Person();
+Employee.prototype.constructor = Employee;
 Employee.prototype.getDepartment = function() {
-    return this.department
+    return this.department;
 }
 </code></pre><pre><code>var sally = new Employee("Sally", 29, "Human Resources")
-sally instanceOf Person // true
-sally.getDepartment() //"Human Resources"
-sally.getName() //"Sally"
+sally instanceOf Person; // true
+sally.getDepartment(); //"Human Resources"
+sally.getName(); //"Sally"
 </code></pre>
                 <aside class="notes">
                     <ol>
@@ -447,17 +461,28 @@ sally.getName() //"Sally"
                 </aside>
                 </section>
                 <section>
-                    <h2>Gotchas: 'this' Scoping</h2>
-                    <p>'<code>this</code>' refers to the context a function is called within.
+                <h2>Prototype Augmentation</h2>
+<pre><code>Array.prototype.double = function() {
+    var doubleArray = this.slice(0); //Copies 'this' array
+    this.forEach(function(elm) {
+        doubleArray.push(elm);
+    });
+    return doubleArray;
+}
+
+var doubleArray = [1,2,3].double(); //[1,2,3,1,2,3]</code></pre>
+                </section>
+                <section>
+                    <h2>Gotchas: <code style="text-transform: none;">this</code> is confusing</h2>
 <pre><code style="max-height: 600px;max-width: 900px;padding:0">function ObjA() {
     this.myField = "ObjA's Field";
-    this.callMeBack = function(aFun) { aFun() };
+    this.callMeBack = function(aFun) { aFun(); };
 }                                    
 
 function ObjB() {
     this.myField = "ObjB's Field";
     this.printMyField = function() {
-        console.log("myField: %s", this.myField)
+        console.log("myField: %s", this.myField);
     };
 }
 
@@ -484,13 +509,12 @@ objA.callMeBack(objB.printMyField.bind(objA)); // >"myField: ObjA's Field"</code
         function success(data) {
             var managerEmployees =
                 data.filter(function(emp) {
-                    return emp == manager
-                    }
-                );
+                    return emp == manager;
+                });
             deferred.resolve(managerEmployees);
         }, function err(err) {
             var reason = err.msg;
-            deferred.reject(reason)
+            deferred.reject(reason);
         }
     );
     return deferred.promise;
@@ -565,7 +589,17 @@ module.exports.Model.Employee = EmployeeModel</code></pre>
 					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
 					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{
+                        src: 'plugin/highlight/highlight.js', 
+                        async: true, 
+                        callback: function() {
+                            console.log("hljs: %o", hljs);
+                            hljs.configure({
+                                languages: ["javascript"]
+                            });
+                            hljs.initHighlightingOnLoad(); 
+                        }
+                    },
 					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
 					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
 				]
