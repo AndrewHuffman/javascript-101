@@ -179,9 +179,9 @@ s.readdir(source, function(err, files) {
                 if (err) {
                     console.log("Error identifying file size: "+err);
                 } else {
-                    var aspect = (values.width / values.height)
+                    var aspectRatio = (values.width / values.height)
                     widths.forEach(function(width, widthIndex) {
-                        height = Math.min(Math.round(width/aspect), maxHeight);
+                        height = Math.min(Math.round(width/aspectRatio), maxHeight);
                         console.log("resizing " + filename + " to " + width+'x'+height);
                         this.resize(width, height).write(destination, function(err) {
                             if(err) { console.log('Error writing file: '+err); }
@@ -586,6 +586,28 @@ function isSales(emp) { return emp.dept == "Sales" };
                         </section>
                         <section>
                             <h2>Aspects</h2>
+<pre style="width:950px;"><code style="width:950px;">//Called after any EmployeesModel.get() call.
+aspect.after(EmployeesModel, "getManager", function(manager) {
+    //arguments passed to callback are return value of original call
+    var returnValue = manager || "No Manager";
+    //Return value is what will be returned to the original caller
+    return returnValue;
+});</code></pre>
+<pre style="width:950px;"><code style="width:950px;">//Called before any SalesEmployeesWidget.set() call
+aspect.before(SalesEmployeesWidget, "set", function(field, value) {
+    //arguments are the original arguments passed to SalesEmployeesWidget.set()
+    console.log("Field %s value changed to value %s", field, value);
+    //return value is the arguments passed to original function (or next aspect)
+    return [field, value];
+});</code></pre><pre style="width:950px;"><code style="width:950px;">//Replaces original function with advising function
+aspect.around(SalesEmployeesWidget, "set", function(originalSet) {
+    return function(field, value) {
+        //do something before call
+        var returnValue = originalSet(field, value);
+        //do something after call
+        return returnValue; //returned to original caller
+    }
+});</code></pre>
                         </section>
                         <section>
                             <h2>Deferreds &amp; Promises</h2>
