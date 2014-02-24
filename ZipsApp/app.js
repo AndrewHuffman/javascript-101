@@ -16,7 +16,7 @@ app.get("/zips", function(req, res) {
 //GET /zips/<state>[?limit=<limit>]
 app.get("/zips/:state", function(req, res) {
 	var limit = req.query.limit || 0,
-		state = req.params.state;
+		state = req.params.state.toUpperCase();
 
 	zipsdb.findBy({state:state}, dbResponseHandler(res), limit);
 });

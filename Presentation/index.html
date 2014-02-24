@@ -475,7 +475,16 @@ var doubleArray = [1,2,3].double(); //[1,2,3,1,2,3]</code></pre>
                         <h1>Gotchas</h1>
                     </section>
                     <section>
-                        <h2>Gotchas: <code style="text-transform: none;">this</code> is confusing</h2>
+                        <h2>Asynchronous operations are asynchronous</h2>
+<pre><code>var results = [];
+xhr.get("/values", function(response) {
+    results = response.data;
+});
+drawResults(results); //executes before response comes back
+</code></pre>
+                    </section>
+                    <section>
+                        <h2><code style="text-transform: none;">this</code> is confusing</h2>
 <pre><code>console.log("%o", this); //window (Global object)
 </code></pre><pre class="fragment"><code>function foo() {
     console.log("%o", this);
@@ -520,7 +529,7 @@ printFoo.apply(foo, [param1, param2]); //>"Foo"
 </code></pre>
                     </section> -->
                     <section>
-                        <h2>Gotchas: <code style="text-transform: none;">this</code> is confusing</h2>
+                        <h2><code style="text-transform: none;">this</code> is confusing</h2>
 <pre><code>var DepartmentsTable = {
     depts: ["IT", "HR", "Sales", "Marketing"],
     draw: function() {
@@ -530,7 +539,7 @@ printFoo.apply(foo, [param1, param2]); //>"Foo"
     },
     _addRow: function(dept) { /* Add department to table DOM */ }
 }</code></pre>
-<div class="fragment"><pre><code>/* Assign 'this' to a variable */
+<div class="fragment"><pre><code>/* Option 1: Assign 'this' to a variable */
 DepartmentTable.draw = function() {
     var self = this;
     self.depts.forEach(
@@ -539,7 +548,7 @@ DepartmentTable.draw = function() {
         }
     );
 }</code></pre>
-<pre><code>/* bind the callback to 'this' */
+<pre><code>/* Option 2: bind the callback to 'this' (See: dojo's lang.hitch)*/
 DepartmentTable.draw = function() {
     this.depts.forEach(function(dept) {
         this._addRow(dept);
@@ -547,13 +556,29 @@ DepartmentTable.draw = function() {
 }</code></pre></div>
                     </section>
                     <section>
-                        <h2>Other Gotchas</h2>
-                        <ul>
-                            <li>Lazy Scoping</li>
-                            <li>Globals</li>
-                            <li><code>for-in</code> loops</li>
-                        </ul>
+                        <h2>Scoping</h2><pre><code>function foo() {
+    var x = 5; //Function scope
+    y = 7; //Global scope
+    for (var z = 0; z < 4; ++z) { /* z is still function scoped */ }
+}</code></pre><pre><code>//Lazy Scoping
+var x = [];
+for (var i = 0; i < 3; ++i) {
+    x[i] = function() { return i; };
+}
+x[0](); //returns 3, not 0!</code></pre>
                     </section>
+                    <section>
+                        <h2>Equality is Strange</h2>
+                        <pre><code>//All of the following return true
+null == undefined
+false == 0
+false == ''
+'' == 0
+true == 1
+true == '1'
+'1' == 1
+//Use strict equality, '===' or '!==' if this is not the behavior you want</code></pre>
+                        </section>
                 </section>
                 <section>
                     <section>
@@ -561,6 +586,7 @@ DepartmentTable.draw = function() {
                     </section>
                         <section>
                             <h2>Publish &amp; Subscribe</h2>
+}
 <pre><code>/* Notify widgets that model has changed */
 EmployeesModel = {
     topicTitle: "EmployeesModel",
@@ -674,7 +700,10 @@ employeeModel.getEmployees(function(err, results) {
                     </section>
                 </section>
                 <section>
-
+                <ul>
+                    <li>https://developer.mozilla.org/en-US/docs/Web/JavaScript/Getting_Started</li>
+                    <li></li>
+                </ul>
                 </section>
             </div>
         </div>
