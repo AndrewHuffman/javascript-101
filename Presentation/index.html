@@ -90,7 +90,7 @@
                         </aside>
                     </section>
                     <section>
-                        <img src="./imgs/dom.gif" style="height: 80%;width:80%;" />
+                        <img src="./imgs/dom.gif" style="height: 100%;width:100%;" />
                     </section>
                 </section>
                 <section>
@@ -141,7 +141,8 @@
                     <pre class="fragment"><code>"0" == false /* true */
 !"0" /* false */
 typeof null === 'object' /* true */</code></pre>
-<pre class="fragment"><code>;(function foo() {
+<pre class="fragment"><code>(function foo() {
+    var x = 5;
     // Do something
 })();
 </code></pre>
@@ -285,6 +286,7 @@ var bar = function() {
 }
 </code></pre><pre><code>/* logMessage(msg[, tag, [level]]) */
 function logMessage(msg) {
+    //arguments[0] === msg
     var tag   = arguments[1] || "Global",
         level = arguments[2] || "INFO";
 
@@ -341,7 +343,7 @@ add(12,2); // &gt; "additions: 3"</code></pre>
                     </section>
                     <section>
                     <h2>Closures: Use Case</h2>
-<pre><code>xhr.get("/employees", function(err, response) {
+<pre><code>xhr.get("http://w3.company.net/employees", function(err, response) {
     console.log("Server response for /employees: %o", response);
     if (err) {
         console.log("Error communicating with server.");
@@ -352,7 +354,7 @@ add(12,2); // &gt; "additions: 3"</code></pre>
             /* Do something with data */
         }
     }
-));</code></pre><pre><code> xhr.get("/departments", function(err, response) {
+));</code></pre><pre><code> xhr.get("http://w3.company.net/departments", function(err, response) {
     console.log("Server response for /departments: %o", response);
     if (err) {
         console.log("Error communicating with server.");
@@ -477,7 +479,7 @@ var doubleArray = [1,2,3].double(); //[1,2,3,1,2,3]</code></pre>
                     <section>
                         <h2>Asynchronous operations are asynchronous</h2>
 <pre><code>var results = [];
-xhr.get("/values", function(response) {
+xhr.get("http://data.com/values", function(response) {
     results = response.data;
 });
 drawResults(results); //executes before response comes back
@@ -558,8 +560,9 @@ DepartmentTable.draw = function() {
                     <section>
                         <h2>Scoping</h2><pre><code>function foo() {
     var x = 5; //Function scope
-    y = 7; //Global scope
-    for (var z = 0; z < 4; ++z) { /* z is still function scoped */ }
+    y = 7; //Global scope (same as: window.y = 7)
+    for (var z = 0; z < 4; ++z) { /* do something */  }
+    console.log("z: "+z); // > "z: 4"
 }</code></pre><pre><code>//Lazy Scoping
 var x = [];
 for (var i = 0; i < 3; ++i) {
@@ -586,7 +589,6 @@ true == '1'
                     </section>
                         <section>
                             <h2>Publish &amp; Subscribe</h2>
-}
 <pre><code>/* Notify widgets that model has changed */
 EmployeesModel = {
     topicTitle: "EmployeesModel",
@@ -612,7 +614,7 @@ function isSales(emp) { return emp.dept == "Sales" };
                         </section>
                         <section>
                             <h2>Aspects</h2>
-<pre style="width:950px;"><code style="width:950px;">//Called after any EmployeesModel.get() call.
+<pre style="width:950px;"><code style="width:950px;">//Called after any EmployeesModel.getManager() call.
 aspect.after(EmployeesModel, "getManager", function(manager) {
     //arguments passed to callback are return value of original call
     var returnValue = manager || "No Manager";
@@ -640,14 +642,14 @@ aspect.around(SalesEmployeesWidget, "set", function(originalSet) {
 <pre><code>/* dojo/Deferred */
 function getEmployeesWithManager(manager) {
     var deferred = new Deferred();
-    xhr("/employees").then(
-        function success(data) {
+    xhr("/employees", {
+        onSuccess: function(data) {
             var managerEmployees =
                 data.filter(function(emp) {
                     return emp == manager;
                 });
             deferred.resolve(managerEmployees);
-        }, function err(err) {
+        }, onError: function(err) {
             var reason = err.msg;
             deferred.reject(reason);
         }
