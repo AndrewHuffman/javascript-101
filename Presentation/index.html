@@ -45,6 +45,7 @@
 				<section>
                     <h1>JavaScript 101</h1>
                     <h3>Andrew Huffman</h3>
+                    <h4>Mobile Cloud Services - Mobile Data</h4>
                 </section>
                 <section>
                     <h2>What is JavaScript?</h2>
@@ -116,7 +117,7 @@
                         <img src="./imgs/npm.png" style="background: none;box-shadow:none;height: 30%; width: 30%;" />
                         <img src="./imgs/expressjs.png" style="margin-left:30px;margin-bottom:35px;height: 30%; width: 30%"/> <br />
                         <img src="./imgs/yeoman_toolset.png" style="background: none;box-shadow:none;height: 40%;width:40%;margin-right:30px;" />
-                        <img src="./imgs/mongodb.png" style="height: 50%;width: 50%;background: none;box-shadow:none;margin-bottom:30px;" />
+                        <img src="./imgs/couchdb.png" style="height: 50%;width: 50%;background: none;box-shadow:none;margin-bottom:30px;" />
                         <img src="./imgs/socketio.png" style="height: 50%;width: 50%;"/>
                         <p>and much more...</p>
                         <aside class="notes">
@@ -256,7 +257,7 @@ anArray.length; /* 5 */
 </code></pre>
 <pre class="fragment" style="width: 1000px;line-height:30px;"><code>anArray.push(6); /* [1,2,3,"four",false,6] */
 anArray.pop(); /* returns 6 */
-anArray.join(","); /* "1,2,3,four,false" */
+anArray.join("--"); /* "1--2--3--four--false" */
 </code></pre>
 <pre class="fragment" style="width: 1000px;line-height:30px;"><code>anArray.forEach(function(elm) { /* Do something */ });
 anArray.filter(function(elm) { return elm > 1 }); /* [3,4] */
@@ -309,8 +310,11 @@ logMessage("Something bad happened.", "PageController", "ERROR");</code></pre>
         table.append(row);
     }
   
-    var goodArtists = artists.filter(function(artist) { return artist.isGood });
-    goodArtists.map(_addRow);
+    var goodArtists = artists.filter(
+        function(artist) {
+            return artist.isGood
+        });
+    goodArtists.forEach(_addRow);
     return table;
 }</code></pre>
                 <aside class="notes">
@@ -366,7 +370,25 @@ add(12,2); // &gt; "additions: 3"</code></pre>
         }
     }
 ));</code></pre>
-                    </section> 
+                    </section>
+                    <section>
+                    <h2>Closures: Use Case</h2>
+                <pre><code>xhr.get("/employees", 
+    _handServerResponse(function(response) {
+        response.data.forEach(function(emp) {
+            //Add employee to table
+        });
+    }
+));
+
+xhr.post("/departments", 
+    _handServerResponse(function(response) {
+        response.data.forEach(function(dept) {
+            //Add department to table
+        });
+    }
+));</code></pre>
+                    </section>
                     <section>
                     <h2>Closures: Use Case</h2>
 <pre style="width: 1100px;margin-left:-60px"><code style="width: 1100px;margin-left:0px">var _handleServerResponse(next) {
@@ -388,24 +410,6 @@ add(12,2); // &gt; "additions: 3"</code></pre>
 }</code></pre>
                     </section>
                     <section>
-                    <h2>Closures: Use Case</h2>
-                <pre><code>xhr.get("/employees", 
-    _handServerResponse(function(response) {
-        response.data.forEach(function(emp) {
-            //Add employee to table
-        });
-    }
-));
-
-xhr.post("/departments", 
-    _handServerResponse(function(response) {
-        response.data.forEach(function(dept) {
-            //Add department to table
-        });
-    }
-));</code></pre>
-                    </section>
-                    <section>
                         <h2>Constructing Objects</h2>
                         <p>Objects &larr; &rarr; Functions</p>
 <pre><code>function Person(name, age) {
@@ -416,6 +420,10 @@ Person.prototype = {
     getName: function() { return this.name; },
     getAge: function() { return this.age; }
 };</code></pre>
+<pre><code>var john = new Person("John", 33);
+john.getAge(); //33
+</code></pre>
+<pre><code>john.constructor //Person</code></pre>
     <div class="fragment">
 <pre><code>function Person(name, age) {
     this.name = name;
@@ -423,10 +431,6 @@ Person.prototype = {
     this.getName = function() { return this.name; };
     this.getAge  = function() { return this.age; };
 }</code></pre>
-<pre><code>var john = new Person("John", 33);
-john.getAge(); //33
-</code></pre>
-<pre><code>john.constructor //Person</code></pre>
     </div>
                     <aside class="notes">
                         <ol>
@@ -443,13 +447,13 @@ function Employee(name, age, department) {
     this.department = department;
 }
 
-Employee.prototype = new Person();
+Employee.prototype = new Person(); //OR: Object.create(Person.prototype)
 Employee.prototype.constructor = Employee;
 Employee.prototype.getDepartment = function() {
     return this.department;
 }
 </code></pre><pre><code>var sally = new Employee("Sally", 29, "Human Resources")
-sally instanceOf Person; // true
+sally instanceof Person; // true
 sally.getDepartment(); //"Human Resources"
 sally.getName(); //"Sally"
 </code></pre>
@@ -571,8 +575,10 @@ for (var i = 0; i < 3; ++i) {
 x[0](); //returns 3, not 0!</code></pre>
                     </section>
                     <section>
-                        <h2>Equality is Strange</h2>
+                        <h2>Operators</h2>
                         <pre><code>//All of the following return true
+//Use strict equality, '===' or '!==' if this is not the behavior you want
+
 null == undefined
 false == 0
 false == ''
@@ -580,7 +586,14 @@ false == ''
 true == 1
 true == '1'
 '1' == 1
-//Use strict equality, '===' or '!==' if this is not the behavior you want</code></pre>
+
+//typeof is lame
+typeof null === 'object'
+typeof [1,2,3] === 'object'
+
+//Instead, use '.constructor'
+arr && arr.constructor === Array
+</code></pre>
                         </section>
                 </section>
                 <section>
@@ -613,33 +626,8 @@ function isSales(emp) { return emp.dept == "Sales" };
 </code></pre>
                         </section>
                         <section>
-                            <h2>Aspects</h2>
-<pre style="width:950px;"><code style="width:950px;">//Called after any EmployeesModel.getManager() call.
-aspect.after(EmployeesModel, "getManager", function(manager) {
-    //arguments passed to callback are return value of original call
-    var returnValue = manager || "No Manager";
-    //Return value is what will be returned to the original caller
-    return returnValue;
-});</code></pre>
-<pre style="width:950px;"><code style="width:950px;">//Called before any SalesEmployeesWidget.set() call
-aspect.before(SalesEmployeesWidget, "set", function(field, value) {
-    //arguments are the original arguments passed to SalesEmployeesWidget.set()
-    console.log("Field %s value changed to value %s", field, value);
-    //return value is the arguments passed to original function (or next aspect)
-    return [field, value];
-});</code></pre><pre style="width:950px;"><code style="width:950px;">//Replaces original function with advising function
-aspect.around(SalesEmployeesWidget, "set", function(originalSet) {
-    return function(field, value) {
-        //do something before call
-        var returnValue = originalSet(field, value);
-        //do something after call
-        return returnValue; //returned to original caller
-    }
-});</code></pre>
-                        </section>
-                        <section>
                             <h2>Deferreds &amp; Promises</h2>
-<pre><code>/* dojo/Deferred */
+<pre><code>/* dojo/Deferred - for Node, see Q: https://github.com/kriskowal/q */
 function getEmployeesWithManager(manager) {
     var deferred = new Deferred();
     xhr("/employees", {
@@ -700,12 +688,45 @@ employeeModel.getEmployees(function(err, results) {
     //Handle employees 
 })</code></pre>
                     </section>
+                    <section>
+                            <h2>Aspects</h2>
+<pre style="width:950px;"><code style="width:950px;">//Called after any EmployeesModel.getManager() call.
+aspect.after(EmployeesModel, "getManager", function(manager) {
+    //arguments passed to callback are return value of original call
+    var returnValue = manager || "No Manager";
+    //Return value is what will be returned to the original caller
+    return returnValue;
+});</code></pre>
+<pre style="width:950px;"><code style="width:950px;">//Called before any SalesEmployeesWidget.set() call
+aspect.before(SalesEmployeesWidget, "set", function(field, value) {
+    //arguments are the original arguments passed to SalesEmployeesWidget.set()
+    console.log("Field %s value changed to value %s", field, value);
+    //return value is the arguments passed to original function (or next aspect)
+    return [field, value];
+});</code></pre><pre style="width:950px;"><code style="width:950px;">//Replaces original function with advising function
+aspect.around(SalesEmployeesWidget, "set", function(originalSet) {
+    return function(field, value) {
+        //do something before call
+        var returnValue = originalSet(field, value);
+        //do something after call
+        return returnValue; //returned to original caller
+    }
+});</code></pre>
+                        </section>
                 </section>
                 <section>
+                <h2>Learn more!</h2>
                 <ul>
-                    <li>https://developer.mozilla.org/en-US/docs/Web/JavaScript/Getting_Started</li>
-                    <li></li>
+                    <li><a href="https://github.com/spencertipping/js-in-ten-minutes">JavaScript in Ten (arbitrarily long) Minutes</a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Getting_Started">Mozilla Developer Network - Getting Started</a></li>
+                    <li><a href="http://www.codecademy.com/tracks/javascript">Codeacademy - JavaScript Track</a></li>
+                    <li><a href="http://dojotoolkit.org/documentation/">Dojo - Getting Started Tutorials</a></li>
+                    <li><a href="http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/">NodeJS: ExpressJS+Jade+MongoDB</a></li>
                 </ul>
+                </section>
+                <section>
+                    <h1>Questions?!</h1>
+                    <h2 style="font-family: 'Arial'">¯\_(ツ)_/¯</h2>
                 </section>
             </div>
         </div>
